@@ -1,58 +1,42 @@
 (ns episode54.mastermind.code-breaker-test
   (:require [midje.sweet :refer :all]
+            [episode54.mastermind.code-maker :as cm]
             [episode54.mastermind.code-breaker :refer :all]))
 
 
-(facts "break code"
-       (fact "first guess"
-             (break []) => [0 0 0 0]))
+(facts "code breaker"
+       (fact "Guess to 4-digit base 6 number"
+             (guess-to-number [0 0 0 0]) => 0
+             (guess-to-number [0 0 0 1]) => 1
+             (guess-to-number [0 0 1 0]) => 6
+             (guess-to-number [0 0 1 1]) => 7
+             (guess-to-number [0 1 1 1]) => 43
+             (guess-to-number [1 1 1 1]) => 259
+             (guess-to-number [5 5 5 5]) => (dec (* 6 6 6 6)))
 
-(facts "Scoring position matches"
-       (fact "score guess with no matche"
-             (score [0 0 0 0] [1 1 1 1]) => [0 0])
+       (fact "4-bit base 6 number to code"
+             (number-to-guess 0)   => [0 0 0 0]
+             (number-to-guess 1)   => [0 0 0 1]
+             (number-to-guess 6)   => [0 0 1 0]
+             (number-to-guess 7)   => [0 0 1 1]
+             (number-to-guess 43)  => [0 1 1 1]
+             (number-to-guess 259) => [1 1 1 1]
+             (number-to-guess (dec (* 6 6 6 6))) => [5 5 5 5])
 
-       (fact "score geuss with one :pos match"
-             (score [0 0 0 0] [0 1 1 1]) => [1 0])
+       (fact "Increment guess"
+             (increment-guess [0 0 0 0]) => [0 0 0 1]
+             (increment-guess [0 0 0 5]) => [0 0 1 0]
+             (increment-guess [0 0 5 5]) => [0 1 0 0]
+             (increment-guess [0 5 5 5]) => [1 0 0 0]
+             (increment-guess [5 5 5 5]) => [0 0 0 0])
 
-       (fact "score guess with two :pos macthes"
-             (score [0 0 0 0] [0 0 1 1]) => [2 0]
-             (score [0 1 0 0] [0 2 3 0]) => [2 0])
-
-       (fact "score guess with three mathes"
-             (score [1 1 1 1] [1 1 5 1]) => [3 0]
-             (score [0 0 0 1] [0 3 0 1]) => [3 0]
-             (score [0 0 0 1] [0 3 0 1]) => [3 0]))
-
-
-(facts "Scoring value matches"
-       (fact "No position but one value match"
-             (score [0 1 2 3] [5 4 6 0]) => [0 1])
-       
-       (fact "0 position and 2 value matches"
-             (score [6 0 2 3] [1 2 5 0]) => [0 2])
-
-       (fact "0 position and 3 value matches"
-             (score [5 0 2 1] [1 2 4 0]) => [0 3])
-       
-       (fact "1 position and 1 value matches"
-             (score [1 3 2 3] [1 2 5 0]) => [1 1])
-
-       (fact "1 position and 3 value matches"
-             (score [1 0 2 3] [1 2 3 0]) => [1 3])
-
-       (fact "1 position and 2 duplicated value matches
-              If there is are duplicates in the guess
-              they should not be counted unless there 
-              is the same number of duplicates in the code!"
-             (score [1 0 2 3] [1 2 3 2]) => [1 2])
-       )
+       (fact "Initial guess"
+             (break-code []) => [0 0 0 0])
 
 
-(defn fac
-  [v n]
-  (if (zero? n) v (fac (* v n) (dec n))))
+       (future-fact "Walk through the solution of code [1 2 3 4]"
+                    (break-code [[[0 0 0 0]
+                                  (cm/score [1 2 3 4] [0 0 0 0])]]) => [0 0 0 1]))
 
 
-(defn factorial
-  [n]
-  (fac 1 n))
+
