@@ -38,7 +38,8 @@
 
 
 (defn score
-  "Score a guess against a code returning "
+  "Score a guess against a code returning a vector with
+  number of position (p) and value matches (v) - [p v]"
   [code guess]
   (let [p (position-matches code guess)
         v (value-matches code guess)

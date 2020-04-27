@@ -28,15 +28,52 @@
              (increment-guess [0 0 0 5]) => [0 0 1 0]
              (increment-guess [0 0 5 5]) => [0 1 0 0]
              (increment-guess [0 5 5 5]) => [1 0 0 0]
-             (increment-guess [5 5 5 5]) => [0 0 0 0])
+             (increment-guess [5 5 5 5]) => :overflow)
 
        (fact "Initial guess"
-             (break-code []) => [0 0 0 0])
+             (break-code nil []) => [0 0 0 0])
 
 
-       (future-fact "Walk through the solution of code [1 2 3 4]"
-                    (break-code [[[0 0 0 0]
-                                  (cm/score [1 2 3 4] [0 0 0 0])]]) => [0 0 0 1]))
+       (fact "Walk through the solution of code [1 2 3 4]"
+             (break-code [0 0 0 0]
+                         [[[0 0 0 0] [0 0]]]) => [1 1 1 1])
+
+
+       (fact "first step for code [0 0 0 1]"
+             (break-code [0 0 0 0]
+                         [[[0 0 0 0] [3 0]]]) => [0 0 0 1])
+
+
+       (fact "Secong step for code [0 0 1 0]"
+             (break-code [0 0 0 1]
+                         [[[0 0 0 0] [3 0]]
+                          [[0 0 0 1] [2 2]]]) => [0 0 1 0]))
+
+
+(facts "3x2 strategy"
+       (fact "first step"
+             (break-code-3x2 nil []) => [0 0 1 1])
+
+       (fact "second step"
+             (break-code-3x2 [0 0 1 1]
+                             [[[0 0 1 1] [0 0]]]) => [2 2 3 3])
+
+       (fact "third step"
+             (break-code-3x2 [2 2 3 3]
+                             [[[0 0 1 1] [0 0]]
+                              [[2 2 3 3] [0 0]]]) => [4 4 5 5])
+       (fact "fourth step falls back to sequential decoding"
+             (break-code-3x2 [4 4 5 5]
+                             [[[0 0 1 1] [0 0]]
+                              [[2 2 3 3] [0 0]]
+                              [[4 4 5 5] [0 4]]]) => [5 5 4 4])
+       
+       (fact "fith step carries on with sequential decoding"
+             (break-code-3x2 [4 4 5 5]
+                             [[[0 0 1 1] [0 0]]
+                              [[2 2 3 3] [0 0]]
+                              [[4 4 5 5] [2 2]]
+                              [[4 5 4 5] [0 4]]]) => [5 4 5 4]))
 
 
 

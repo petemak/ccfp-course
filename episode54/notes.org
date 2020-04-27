@@ -1,0 +1,130 @@
+
+#+TITLE: An Introduction to Org Mode
+
+* Notes 							      :learn:
+** Bullet points
+- Alt + Enter - bulltet point or prompt for similar item
+- Alt + ->      - sub item / indentation right
+- Alt + <-      - subitem / indentation left
+- Alt + Up    - move up
+- Alt + Down - move item down
+
+
+** TODO items
+- Shift + ->   - Mark as TODO
+- Shift + <-   - Remove TODO
+- Shift + ->   - twice moves to DONE
+
+*** TODO Item 1 
+   DEADLINE: <2020-04-29 Wed>
+*** DONE Item 2 
+    DEADLINE: <2020-04-27 Mon>
+*** TODO Item 3
+    DEADLINE: <2020-05-07 Thu>
+
+
+** Check boxes 
+- indent + - [ space ]    - checkbox
+*** Ctrl C + Ctrl C inside a check-box   - marks or removes the mark
+- [/] in outline header for checkboxes calculates the ratio of completion
+- [%] in outline header for checkboxes caclulates percentage of complition
+
+** Shopping list [42%]
+  + [ ] eggs
+  + [X] bacon
+  + [X] bread
+  + [ ] chease
+  + [X] milk 
+  + [ ] jam
+  + [ ] juice
+
+** Formatting
+*Clojure* is a dynamic, general-purpose programming language, 
+combining the approachability and interactive development 
+of a scripting language with an efficient and robust 
+infrastructure for multithreaded programming.
+
+*Bold*, /italic/, =verbatm=, _underlined_, ~code (reduce + [1 2 3])~, +strikethrough+
+
+    
+** Deadlines
+- Ctrl + C  Ctr + D -  add deadline 
+    DEADLINE: <2020-04-27 Mon
+
+
+** Tagging
+- Ctrl +C Ctr + C   - prompts for a tag on current item 
+
+** Links 
+- Ctrl + C Ctrl + L   - add links
+- Ctrl + C Ctrl + O  - open link in a broswer tab
+
+- [[https://clojure.org/][Clojure]]
+- [[https://conan.is/blogging/midje-rocks-integration-testing-in-clojure.html][Midje - Integration testing]]
+- [[https://grison.me/2020/04/23/webauthn-with-clojure/][WebAuth with Clojure]]
+- [[https://www.youtube.com/watch?v%3DSzA2YODtgK4][Getting started with Org Mode]]
+- [[https://www.youtube.com/watch?v%3Doo-7mN9WXTw][Domain modeling with Datalog]]
+
+
+
+** Tables
+Pipe then data - tab - data enter
+pipe hyphen tab
+
+*Table 1*
+| Some | Data           |
+|------+----------------|
+|   17 | Do something   |
+|   18 | Do something 2 |
+
+
+*Table 2*
+| ID | Name  | Score |
+|----+-------+-------|
+| 01 | Vivis |    27 |
+| 02 | Peter |    17 |
+| 03 | Lulu  |    23 |
+| 04 | Huhu  |    39 |
+| 05 | Haha  |    28 |
+| 06 | Bubu  |    10 |
+                  
+
+*Table 3*
+| Task ID | Name    | State |
+|---------+---------+-------|
+| T0001   | Do this | Done  |
+| T0002   | Do that | Open  |
+| T0003   | Do it   | In Progress |
+
+
+** Exporting
+Ctrl + c Ctrl + e
+[h] - HTML etc
+
+** Source code
+Use =#+BEGIN_SRC= and =#+END_SRC= to create a code block
+Then place cursor inside block and Ctrl + c ' (quote) to edit
+
+~Ctrl + c '~
+
+#+BEGIN_SRC clojure
+  (defn fac
+    [n]
+    (if (= n 0)
+      n
+      (fac (* n (dec n)) )))
+  (fac 3)
+#+END_SRC
+
+
+* Setting up ob-clojure
+- Install package ob-clojure
+
+* Latex integration
+- Charachters: \alpha \rightarrow \beta
+- $O(n \log n)$ 
+\begin{align*}
+ 3 * 2 + 8 &= 6 + 1 \\
+           &= 7
+\end{align*}
+
